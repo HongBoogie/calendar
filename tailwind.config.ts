@@ -5,7 +5,7 @@ import {
   HEADER_HEIGHT,
   // home
   HOME_MIN_HEIGHT,
-} from "./app/configs/tailwind.constant"
+} from "@configs/tailwind.constant"
 
 const config: Config = {
   content: [
