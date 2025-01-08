@@ -1,17 +1,12 @@
 import type { Config } from "tailwindcss";
-import {
-  // layout
-  LAYOUT_MIN_WIDTH,
-  HEADER_HEIGHT,
-  // home
-  HOME_MIN_HEIGHT,
-} from "@configs/tailwind.constant"
+
+import { HEADER_HEIGHT, HOME_MIN_HEIGHT, LAYOUT_MIN_WIDTH } from "./src/configs/tailwind.constant";
 
 const config: Config = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",  
   ],
   theme: {
     extend: {
