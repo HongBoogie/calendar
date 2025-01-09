@@ -1,12 +1,10 @@
 'use client';
 
-import React, { useEffect } from "react";
+import React from "react";
+import clsx from "clsx";
 import { subMonths } from "date-fns";
 import useCalendar from "../hooks/useCalendar";
 
-type CalendarProps = {
-
-}
 
 const Calendar = () => {
   const { weekCalendarList, currentDate, setCurrentDate } = useCalendar();
@@ -38,19 +36,30 @@ const Calendar = () => {
           </div>
         </div>
         <div className="grid grid-cols-7">
-        {["일", "월", "화", "수", "목", "금", "토"].map((day) => (
-            <div key={day} className="text-center">{day}</div>
+        {["일", "월", "화", "수", "목", "금", "토"].map((day, idx) => (
+            <div key={idx} className={clsx("text-center font-bold mb-1", {
+              ['text-red-500'] : day === '일',
+              ['opacity-35'] : idx !== currentDate.getDay() || currentDate.getMonth() !== new Date().getMonth(),
+            })}>{day}</div>
           ))}
         </div>
         <div className="grid grid-cols-7 flex-grow">
-          {weekCalendarList.map((week, idx) => (
-            <React.Fragment key={idx}>
-              {week.map((day, idx) => (
-                <div key={idx} className="text-center border-t">{day}</div>
-              ))}
-            </React.Fragment>
-          ))}
+  {weekCalendarList.map((week, weekIdx) => (
+    <React.Fragment key={weekIdx}>
+      {week.map((dateObj, dayIdx) => (
+        <div
+          key={dayIdx}
+          className={clsx("text-center border-t pt-2",
+            "hover:bg-gray-100 ease-in-out duration-150", {
+            'text-gray-300': dateObj.type !== 'current'
+          })}
+        >
+          {dateObj.day}
         </div>
+      ))}
+    </React.Fragment>
+  ))}
+</div>
       </div>
   )
 }
