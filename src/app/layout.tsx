@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { PropsWithChildren } from "react";
+import Header from "@/components/Header";
+import Sidebar from "@/components/Sidebar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,8 +31,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Header />
+        <Sidebar />
+        <Layout>
+          {children}
+        </Layout>
       </body>
     </html>
+  );
+}
+
+const Layout = ({ children } : PropsWithChildren) => {
+  return (
+    <div className="min-h-screen pl-40">
+      {children}
+    </div>
   );
 }
