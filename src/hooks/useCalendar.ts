@@ -1,6 +1,8 @@
+'use client';
+
 import React from 'react';
 import { getDaysInMonth, subMonths } from 'date-fns';
-import { CALENDER_LENGTH, DAY_OF_WEEK, DEFAULT_TRASH_VALUE } from '../configs/tailwind.constant';
+import { CALENDER_LENGTH, DAY_OF_WEEK } from '../configs/tailwind.constant';
 
 const useCalendar = () => {
   const [currentDate, setCurrentDate] = React.useState(new Date());
