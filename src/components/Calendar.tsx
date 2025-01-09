@@ -21,10 +21,21 @@ const Calendar = () => {
 
   return (
       <div className="flex flex-col min-h-home">
-        <div className="flex gap-2">
+        <div className="flex gap-4 m-3">
           <strong className="text-lg">{currentDate.getFullYear()}. {calculateMonth(currentDate.getMonth() + 1)}</strong>
-          <button onClick={() => setCurrentDate(subMonths(currentDate, 1))}>prev</button>
-          <button onClick={() => setCurrentDate(subMonths(currentDate, -1))}>next</button>
+          <div className="flex gap-1">
+          <button 
+          className="border rounded-md w-8 flex items-center justify-center"
+          onClick={() => setCurrentDate(subMonths(currentDate, 1))}>{'<'}</button>
+          <button 
+          className="border rounded-md w-8 flex items-center justify-center"
+          onClick={() => setCurrentDate(subMonths(currentDate, -1))}>{'>'}</button>
+          <button
+            className="border rounded-md w-8 flex items-center justify-center text-xs"
+            onClick={() => setCurrentDate(currentDate)}>
+            오늘
+          </button>
+          </div>
         </div>
         <div className="grid grid-cols-7">
         {["일", "월", "화", "수", "목", "금", "토"].map((day) => (
