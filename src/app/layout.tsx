@@ -43,7 +43,7 @@ export default function RootLayout({
 
 const Layout = ({ children } : PropsWithChildren) => {
   return (
-    <div className="min-h-screen pl-40">
+    <div className="min-h-home pl-40">
       {children}
     </div>
   );
