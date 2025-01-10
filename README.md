@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 실행 방법
 
-## Getting Started
+> 배포할 거라 괜찮습니다! 개발 모드로 사용하시려면 npm i & npm run dev 부탁드려요
 
-First, run the development server:
+## 구현 과정 & 트러블 슈팅
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+서버를 구현할까 싶었지만 다음과 같은 이유로 **클라이언트 Only**로 하기로 했다.
+1. 일주일이라는 시간안에 스프링 부트까지 학습하면서 퀄리티를 잡기는 힘들다고 판단.
+2. 서버를 붙일 수는 있지만, LocalStorage만을 이용하는 것도 괜찮다고 생각이 들었음.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+마음같아선 디자인 시스템 구축 후 작업하고 싶었으나, 하루 잡아먹을 것 같아서 못했음.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+###  폴더 구조
+FSD를 채택해도 좋지만, 소규모 플젝에선 오히려 독이 된다는 느낌이라 각 기능에 따라 폴더 구조를 채택함. 
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 레이아웃 구축
+기본적인 레이아웃은 **Header, Sidebar, Main**으로 나뉨.
+Main 부분만 갈아끼워주는 형태로 구현했음.
 
-## Learn More
+### useCalendar 훅 구현
+개인적으로 신경을 가장 많이 썼고 수정도 많이 거친 훅인데, 캘린더를 처음 구현해보다보니 신경쓸 점이 굉장히 많았음. 라이브러리를 사용해서 구현한 적은 있지만 쌩으로 구현하려니 머리가 아팠음.
 
-To learn more about Next.js, take a look at the following resources:
+신경써야 했던 건
+1. 어떻게 이번달이 아닌 달을 음영처리 할 것인가?
+2. 공휴일은 어떻게 표현하지?
+3. 일정을 어떻게 UI적으로 표현할 것인가? 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+등등.. 고민이 많았다.
+찾아보니 **date-fns** 를 사용해서 많이 구현하는 것 같았고, 나도 이를 통해 string 형태를 파싱하면서 구현하면 되리란 생각이 들었다.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 상태 관리
+일정을 등록해주려면 서버를 쓰거나, 전역 상태를 쓰거나 해야 했는데, 나는 전역 상태 + LocalStorage로 데이터의 영속성을 보장하고자 했다.
 
-## Deploy on Vercel
+전역 상태 관리 라이브러리는 Recoil, Zustand 중에 고민했지만, Zustand를 쓰기로 했다. Recoil은 메모리 누수, 메인 엔지니어 해고 (...) 등의 문제로 미래가 불투명했기에 대세인 Zustand가 좋겠다 싶었다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+미들웨어를 통해 Localstorage에 저장 및 참조를 하게 구현하였고, CRUD 기능을 구현하였다.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 모달 
+
+모달을 띄우기 위해 **GlobalPortal** 을 구현하였다. 부스트캠프 활동을 하면서 얻은 기술인데, Portal을 통해 Modal 뼈대를 구현해놓으면 굉장히 재사용성이 높다 (비슷한 로직으로 Toast도 구현하면 괜찮았음). 그 후 Modal을 활용해 일정 추가 모달, 일정 상세 모달을 구현했다. 디자인은 좀 손봐야 할듯 하다.
+
+
+## 트러블 슈팅
+
+### hydration 에러
+
+SSR 과정에서 localStorage를 참조해서 일어난 문제였다. 마주치자 마자 그럴거라 생각했고, schedulesByDay 상태를 추가하여 모든 일정 데이터를 클라이언트 사이드에서만 관리하도록 하여 해결하였다.
+
+### 리렌더링 문제
+
+일정을 삭제하고 리렌더링이 일어나지 않는 문제가 발생했다. 리액트의 렌더링 조건을 충족시키지 못했다고 생각하였고, schedules 파라미터를 useEffect의 의존성 배열에 추가하는 것으로 schedulesByDay가 업데이트되어 화면을 리렌더링시키는 방식으로 해결할 수 있었다.
