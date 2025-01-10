@@ -4,35 +4,37 @@ import { type ComponentPropsWithoutRef } from 'react';
 import { DateObj, Schedule } from '@/libs/internalTypes';
 import Modal from './Modal';
 import { useScheduleStore } from '@/store/ScheduleStore';
+import DeleteSvg from './svg/DeleteSvg';
+import ModifySvg from './svg/ModifySvg';
 
 type Props = ComponentPropsWithoutRef<typeof Modal> & {
   DateObj: DateObj;
   schedule: Schedule | null;
 };
 
-const ScheduleModal = ({ close, DateObj, schedule } : Props) => {
-
-  const deleteSchedule = useScheduleStore(state => state.deleteSchedule);
+const ScheduleModal = ({ close, DateObj, schedule }: Props) => {
+  const deleteSchedule = useScheduleStore((state) => state.deleteSchedule);
+  const updateSchedule = useScheduleStore((state) => state.updateSchedule);
 
   const handleDelete = () => {
     if (schedule) {
       deleteSchedule(schedule.id);
       close();
     }
-  }
+  };
 
   return (
     <Modal close={close}>
-      {
-        schedule && (
-          <button
-        onClick={handleDelete}
-        className='flex w-12 justify-center ml-auto bg-sky-300 rounded-lg text-white'
-      >
-        삭제
-      </button>
-        )
-      }
+      {schedule && (
+        <div className='flex justify-end gap-1'>
+          <button>
+            <ModifySvg />
+          </button>
+          <button onClick={handleDelete}>
+            <DeleteSvg />
+          </button>
+        </div>
+      )}
       <div className="text-center">
         {schedule ? (
           <>
@@ -49,7 +51,7 @@ const ScheduleModal = ({ close, DateObj, schedule } : Props) => {
         )}
       </div>
     </Modal>
-  )
-}
+  );
+};
 
 export default ScheduleModal;

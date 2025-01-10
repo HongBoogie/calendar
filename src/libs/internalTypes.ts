@@ -8,7 +8,7 @@ export type DateObj = {
   day: number;
   type?: string;
   month: number;
-}
+};
 
 export type Schedule = {
   id: string;
@@ -18,4 +18,4 @@ export type Schedule = {
   startTime?: string;
   endTime?: string;
   isAllDay: boolean;
-}
+};

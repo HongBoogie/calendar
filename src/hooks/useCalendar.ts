@@ -6,16 +6,12 @@ import { CALENDER_LENGTH, DAY_OF_WEEK } from '../configs/tailwind.constant';
 
 const useCalendar = () => {
   const [currentDate, setCurrentDate] = React.useState(new Date());
-  
+
   const totalMonthDays = getDaysInMonth(currentDate);
   const prevMonth = subMonths(currentDate, 1);
   const prevMonthDays = getDaysInMonth(prevMonth);
-  
-  const firstDayOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    1
-  );
+
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
   const startDayIndex = firstDayOfMonth.getDay();
 
   const prevDayList = Array.from({ length: startDayIndex }).map((_, index) => ({
@@ -43,7 +39,7 @@ const useCalendar = () => {
 
   const currentCalendarList = [...prevDayList, ...currentDayList, ...nextDayList];
   const weekCalendarList = currentCalendarList.reduce(
-    (acc: Array<Array<{ year:number, day: number, type: string, month: number}>>, cur, idx) => {
+    (acc: Array<Array<{ year: number; day: number; type: string; month: number }>>, cur, idx) => {
       const chunkIndex = Math.floor(idx / DAY_OF_WEEK);
       if (!acc[chunkIndex]) {
         acc[chunkIndex] = [];
@@ -53,7 +49,7 @@ const useCalendar = () => {
     },
     [],
   );
-  
+
   return {
     weekCalendarList,
     currentDate,

@@ -1,5 +1,5 @@
 export const LAYOUT_MIN_WIDTH = '58.125rem';
-export const HEADER_HEIGHT = '2.25rem'; 
+export const HEADER_HEIGHT = '2.25rem';
 
 export const HOME_MIN_HEIGHT = `calc(100vh - ${HEADER_HEIGHT})`;
 

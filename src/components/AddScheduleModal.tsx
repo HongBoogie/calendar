@@ -13,54 +13,48 @@ export type FormDataProps = {
   startTime: string;
   endTime: string;
   isAllDay: boolean;
-}
+};
 
 const AddScheduleModal = ({ children, close }: Props) => {
-  const addSchedule = useScheduleStore(state => state.addSchedule);
+  const addSchedule = useScheduleStore((state) => state.addSchedule);
   const [formData, setFormData] = useState<FormDataProps>({
     title: '',
     description: '',
-    date: '', 
+    date: '',
     startTime: '',
     endTime: '',
-    isAllDay: false
+    isAllDay: false,
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' 
-        ? (e.target as HTMLInputElement).checked 
-        : value
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const [year, month, day] = formData.date.split('-').map(Number);
-    
+
     addSchedule({
       title: formData.title,
       description: formData.description,
       date: { year, month, day },
       startTime: formData.isAllDay ? undefined : formData.startTime,
       endTime: formData.isAllDay ? undefined : formData.endTime,
-      isAllDay: formData.isAllDay
+      isAllDay: formData.isAllDay,
     });
-    
+
     close();
   };
 
   return (
     <Modal close={close}>
-      <h2 className="text-xl font-bold mb-4 text-center">
-        일정 추가
-      </h2>
-      
+      <h2 className="text-xl font-bold mb-4 text-center">일정 추가</h2>
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-700">
