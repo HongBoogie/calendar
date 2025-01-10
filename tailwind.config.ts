@@ -13,9 +13,15 @@ const config: Config = {
       height: {
         header: HEADER_HEIGHT,
       },
+      boxShadow: {
+        modal: '0 0 4px rgba(0, 0, 0, .4), 0 4px 16px rgba(0, 0, 0, .5)',
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+      },
+      bg: {
+        modal: 'rgba(0, 0, 0, .5)',
       },
       minHeight: {
         home: HOME_MIN_HEIGHT,
