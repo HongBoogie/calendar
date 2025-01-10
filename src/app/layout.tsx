@@ -4,6 +4,7 @@ import "./globals.css";
 import { PropsWithChildren } from "react";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
+import GlobalPortal from "@/GlobalPortal";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,11 +32,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        <Sidebar />
-        <Layout>
-          {children}
-        </Layout>
+        <GlobalPortal>
+          <Header />
+          <Sidebar />
+          <Layout>
+            {children}
+          </Layout>
+        </GlobalPortal>
       </body>
     </html>
   );

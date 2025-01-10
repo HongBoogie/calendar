@@ -1,9 +1,11 @@
 'use client';
 
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { type PropsWithChildren } from "react";
 import { subMonths } from "date-fns";
+import { useState } from "react";
+import ScheduleModal from "./ScheduleModal";
 
 
 type CalendarContextProps = {
@@ -87,7 +89,14 @@ const WeekDays = () => {
 }
 
 const Days = () => {
-  const { weekCalendarList } = useCalendarContext();
+  const [isShowModal, setIsShowModal] = useState(false);
+  const { weekCalendarList, currentDate } = useCalendarContext();
+  const openModal = () => setIsShowModal(true);
+  const closeModal = () => setIsShowModal(false);
+
+  useEffect(() => {
+    console.log('isShowModal', isShowModal);
+  }, [isShowModal]);
 
   return (
     <div className="grid grid-cols-7 flex-grow">
@@ -96,14 +105,22 @@ const Days = () => {
       {week.map((dateObj, dayIdx) => (
         <div
           key={dayIdx}
-          className={clsx("text-center border-t pt-2",
+          onClick={openModal}
+          className={clsx("text-center relative border-t pt-2",
             "hover:bg-sky-50 ease-in-out duration-150", {
-            'text-gray-300': dateObj.type !== 'current'
+            'text-gray-300': dateObj.type !== 'current',
+            'text-white': dateObj.day === new Date().getDate() && currentDate.getMonth() === new Date().getMonth()
           })}
         >
+          { dateObj.day === new Date().getDate() && currentDate.getMonth() === new Date().getMonth() && (
+            <div className="absolute left-1/2 top-2 opacity-50 -translate-x-1/2 w-6 h-6 bg-sky-500 rounded-full">
+              <span className="text-white">{dateObj.day} </span>
+            </div>
+          )}
           {dateObj.day}
         </div>
       ))}
+       {isShowModal && <ScheduleModal close={closeModal}>일정</ScheduleModal>}
     </React.Fragment>
   ))}
 </div>
