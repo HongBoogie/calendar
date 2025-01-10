@@ -19,25 +19,31 @@ const useCalendar = () => {
   const startDayIndex = firstDayOfMonth.getDay();
 
   const prevDayList = Array.from({ length: startDayIndex }).map((_, index) => ({
+    year: prevMonth.getFullYear(),
     day: prevMonthDays - startDayIndex + index + 1,
-    type: 'prev'
+    type: 'prev',
+    month: prevMonth.getMonth() + 1,
   }));
 
   const currentDayList = Array.from({ length: totalMonthDays }).map((_, i) => ({
+    year: currentDate.getFullYear(),
     day: i + 1,
-    type: 'current'
+    type: 'current',
+    month: currentDate.getMonth() + 1,
   }));
 
   const nextDayList = Array.from({
     length: CALENDER_LENGTH - currentDayList.length - prevDayList.length,
   }).map((_, index) => ({
+    year: currentDate.getFullYear(),
     day: index + 1,
-    type: 'next'
+    type: 'next',
+    month: currentDate.getMonth() + 2,
   }));
 
   const currentCalendarList = [...prevDayList, ...currentDayList, ...nextDayList];
   const weekCalendarList = currentCalendarList.reduce(
-    (acc: Array<Array<{day: number, type: string}>>, cur, idx) => {
+    (acc: Array<Array<{ year:number, day: number, type: string, month: number}>>, cur, idx) => {
       const chunkIndex = Math.floor(idx / DAY_OF_WEEK);
       if (!acc[chunkIndex]) {
         acc[chunkIndex] = [];
