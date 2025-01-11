@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss';
 
-import { HEADER_HEIGHT, HOME_MIN_HEIGHT, LAYOUT_MIN_WIDTH } from './src/configs/tailwind.constant';
+import { HEADER_HEIGHT, HOME_MIN_HEIGHT, LAYOUT_MIN_WIDTH, CALENDAR_MIN_HEIGHT } from './src/configs/tailwind.constant';
 
 const config: Config = {
   content: [
@@ -25,6 +25,7 @@ const config: Config = {
       },
       minHeight: {
         home: HOME_MIN_HEIGHT,
+        calendar: CALENDAR_MIN_HEIGHT,
       },
       minWidth: {
         layout: LAYOUT_MIN_WIDTH,

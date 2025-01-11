@@ -14,6 +14,7 @@ type Props = ComponentPropsWithoutRef<typeof Modal> & {
 
 const ScheduleModal = ({ close, schedule }: Props) => {
   const deleteSchedule = useScheduleStore((state) => state.deleteSchedule);
+  const updateSchedule = useScheduleStore((state) => state.updateSchedule);
 
   const handleDelete = () => {
     if (schedule) {
@@ -31,7 +32,7 @@ const ScheduleModal = ({ close, schedule }: Props) => {
               <h3 className="text-lg flex mt-1 font-bold">{schedule.title}</h3>
               {schedule && (
                 <div className="flex gap-1">
-                  <button>
+                  <button onClick={}>
                     <ModifySvg />
                   </button>
                   <button onClick={handleDelete}>

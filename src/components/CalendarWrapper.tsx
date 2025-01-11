@@ -41,7 +41,7 @@ const CalendarWrapper = ({
 
   return (
     <CalendarContext.Provider value={value}>
-      <div className="flex flex-col min-h-home">{children}</div>
+      <div className="flex flex-col border-t min-h-calendar">{children}</div>
     </CalendarContext.Provider>
   );
 };
@@ -67,7 +67,7 @@ const Buttons = () => {
   };
 
   return (
-    <div className="flex gap-4 w-[calc(100% - 8px)] m-3">
+    <div className="flex fixed top-11 ml-4 gap-4">
       <strong className="text-lg w-20">
         {currentDate.getFullYear()}. {calculateMonth(currentDate.getMonth() + 1)}
       </strong>
@@ -106,11 +106,11 @@ const WeekDays = () => {
   const { currentDate } = useCalendarContext();
 
   return (
-    <div className="grid grid-cols-7">
+    <div className="grid grid-cols-7 mt-12">
       {['일', '월', '화', '수', '목', '금', '토'].map((day, idx) => (
         <div
           key={idx}
-          className={clsx('text-center font-bold mb-1', {
+          className={clsx('text-center font-bold', {
             ['text-red-500']: day === '일',
             ['opacity-35']: idx !== currentDate.getDay() || currentDate.getMonth() !== new Date().getMonth(),
           })}
