@@ -12,7 +12,7 @@ type Props = ComponentPropsWithoutRef<typeof Modal> & {
   schedule: Schedule | null;
 };
 
-const ScheduleModal = ({ close, DateObj, schedule }: Props) => {
+const ScheduleModal = ({ close, schedule }: Props) => {
   const deleteSchedule = useScheduleStore((state) => state.deleteSchedule);
   const updateSchedule = useScheduleStore((state) => state.updateSchedule);
 
@@ -25,29 +25,31 @@ const ScheduleModal = ({ close, DateObj, schedule }: Props) => {
 
   return (
     <Modal close={close}>
-      {schedule && (
-        <div className='flex justify-end gap-1'>
-          <button>
-            <ModifySvg />
-          </button>
-          <button onClick={handleDelete}>
-            <DeleteSvg />
-          </button>
-        </div>
-      )}
-      <div className="text-center">
+      <div className="min-h-32 relative flex-col">
         {schedule ? (
-          <>
-            <h3 className="text-lg font-bold mb-2">{schedule.title}</h3>
-            <p className="mb-2">{schedule.description}</p>
+          <div className="flex flex-col space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg flex mt-1 font-bold">{schedule.title}</h3>
+              {schedule && (
+                <div className="flex gap-1">
+                  <button>
+                    <ModifySvg />
+                  </button>
+                  <button onClick={handleDelete}>
+                    <DeleteSvg />
+                  </button>
+                </div>
+              )}
+            </div>
+            <p className="flex-1 flex truncate">{schedule.description}</p>
             {schedule.startTime && (
-              <p>
+              <p className="text-sm text-gray-500">
                 {schedule.startTime} ~ {schedule.endTime}
               </p>
             )}
-          </>
+          </div>
         ) : (
-          <p>일정이 없습니다.</p>
+          <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">일정이 없습니다.</p>
         )}
       </div>
     </Modal>

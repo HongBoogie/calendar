@@ -66,6 +66,7 @@ const AddScheduleModal = ({ children, close }: Props) => {
             name="title"
             value={formData.title}
             onChange={handleChange}
+            maxLength={15}
             required
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
@@ -141,10 +142,11 @@ const AddScheduleModal = ({ children, close }: Props) => {
             value={formData.description}
             onChange={handleChange}
             rows={3}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            maxLength={30}
+            className="mt-1 relative block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
+          <p className="flex justify-end text-sm">{formData.description.length} / 30</p>
         </div>
-
         <div className="flex gap-2 pt-4">
           <button
             type="button"

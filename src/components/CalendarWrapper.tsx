@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { type PropsWithChildren } from 'react';
 import { subMonths } from 'date-fns';
@@ -10,9 +10,12 @@ import { DateObj, Schedule } from '@/libs/internalTypes';
 import AddScheduleModal from './AddScheduleModal';
 import ScheduleBtn from './ScheduleBtn';
 import { useScheduleStore } from '@/store/ScheduleStore';
+import InitialCalendar from './InitialCalendar';
+import ScheduleLabel from './ScheduleLabel';
+import useScheduleModal from '@/hooks/useScheduleModal';
 
 type CalendarContextProps = {
-  weekCalendarList: Array<Array<{ year: number; day: number; type: string; month: number }>>;
+  weekCalendarList: Array<Array<DateObj>>;
   currentDate: Date;
   setCurrentDate: React.Dispatch<React.SetStateAction<Date>>;
   calculateMonth: (month: number) => string;
@@ -120,12 +123,10 @@ const WeekDays = () => {
 };
 
 const Days = () => {
-  const [isShowModal, setIsShowModal] = useState(false);
-  const [dateObj, setDateObj] = useState<DateObj>({ year: 0, day: 0, type: '', month: 0 });
   const [today, setToday] = useState<Date | null>(null);
   const [schedulesByDay, setSchedulesByDay] = useState<Record<string, Schedule[]>>({});
-  const [modalSchedule, setModalSchedule] = useState<Schedule | null>(null);
   const { weekCalendarList, currentDate } = useCalendarContext();
+  const { isShowModal, dateObj, modalSchedule, openModal, closeModal } = useScheduleModal();
 
   const schedules = useScheduleStore((state) => state.schedules);
   const getSchedulesByDate = useScheduleStore((state) => state.getSchedulesByDate);
@@ -143,27 +144,8 @@ const Days = () => {
     setSchedulesByDay(allSchedules);
   }, [weekCalendarList, getSchedulesByDate, schedules]);
 
-  const openModal = (date: DateObj) => {
-    setIsShowModal(true);
-    setDateObj(date);
-    setModalSchedule(getSchedulesByDate(date)[0] || null);
-  };
-  const closeModal = () => setIsShowModal(false);
-
   if (!today) {
-    return (
-      <div className="grid grid-cols-7 flex-grow">
-        {weekCalendarList.map((week, weekIdx) => (
-          <React.Fragment key={weekIdx}>
-            {week.map((dateObj, dayIdx) => (
-              <div key={dayIdx} className="text-center relative border-t pt-2 min-h-[100px]">
-                <span>{dateObj.day}</span>
-              </div>
-            ))}
-          </React.Fragment>
-        ))}
-      </div>
-    );
+    return <InitialCalendar weekCalendarList={weekCalendarList} />;
   }
 
   return (
@@ -173,7 +155,10 @@ const Days = () => {
           {week.map((dateObj, dayIdx) => {
             const dateKey = `${dateObj.year}-${dateObj.month}-${dateObj.day}`;
             const schedules = schedulesByDay[dateKey] || [];
-            const isToday = dateObj.day === today.getDate() && currentDate.getMonth() === today.getMonth();
+            const isToday =
+              dateObj.day === today.getDate() &&
+              currentDate.getMonth() === today.getMonth() &&
+              currentDate.getFullYear() === today.getFullYear();
 
             return (
               <div
@@ -195,28 +180,7 @@ const Days = () => {
                 ) : (
                   <span>{dateObj.day}</span>
                 )}
-                <div className="mt-4 px-1">
-                  {schedules.map((schedule) => (
-                    <div
-                      key={schedule.id}
-                      className={clsx(
-                        'text-xs p-1 mb-1 rounded truncate text-left',
-                        'bg-sky-100 text-sky-700',
-                        schedule.isAllDay && 'bg-purple-100 text-purple-700',
-                      )}
-                      title={schedule.title}
-                    >
-                      {schedule.isAllDay ? (
-                        schedule.title
-                      ) : (
-                        <>
-                          {schedule.startTime && <span className="mr-1">{schedule.startTime}</span>}
-                          {schedule.title}
-                        </>
-                      )}
-                    </div>
-                  ))}
-                </div>
+                <ScheduleLabel schedules={schedules} />
               </div>
             );
           })}
