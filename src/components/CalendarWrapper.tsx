@@ -21,7 +21,7 @@ type CalendarContextProps = {
   calculateMonth: (month: number) => string;
 };
 
-type CalendarProps = CalendarContextProps & PropsWithChildren<{}>;
+type CalendarProps = CalendarContextProps & PropsWithChildren;
 
 const CalendarContext = React.createContext<CalendarContextProps | undefined>(undefined);
 

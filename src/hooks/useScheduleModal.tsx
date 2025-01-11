@@ -18,6 +18,7 @@ const useScheduleModal = () => {
 
   return {
     isShowModal,
+    setIsShowModal,
     dateObj,
     modalSchedule,
     openModal,

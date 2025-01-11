@@ -15,7 +15,7 @@ export type FormDataProps = {
   isAllDay: boolean;
 };
 
-const AddScheduleModal = ({ children, close }: Props) => {
+const AddScheduleModal = ({ close }: Props) => {
   const addSchedule = useScheduleStore((state) => state.addSchedule);
   const [formData, setFormData] = useState<FormDataProps>({
     title: '',

@@ -1,4 +1,3 @@
-import CalendarSvg from './svg/CalendarSvg';
 import Link from 'next/link';
 
 const Header = () => {

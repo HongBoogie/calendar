@@ -14,7 +14,6 @@ type Props = ComponentPropsWithoutRef<typeof Modal> & {
 
 const ScheduleModal = ({ close, schedule }: Props) => {
   const deleteSchedule = useScheduleStore((state) => state.deleteSchedule);
-  const updateSchedule = useScheduleStore((state) => state.updateSchedule);
 
   const handleDelete = () => {
     if (schedule) {

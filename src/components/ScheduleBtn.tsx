@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import React from 'react';
 
 type ScheduleBtnProps = {
   children: React.ReactNode;
