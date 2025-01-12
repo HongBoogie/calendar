@@ -4,6 +4,7 @@ import { useScheduleStore } from '@/store/ScheduleStore';
 
 type Props = {
   close: () => void;
+  prevClose: () => void;
 } & React.ComponentPropsWithoutRef<'div'>;
 
 export type FormDataProps = {
@@ -15,7 +16,7 @@ export type FormDataProps = {
   isAllDay: boolean;
 };
 
-const AddScheduleModal = ({ close }: Props) => {
+const AddScheduleModal = ({ close, prevClose }: Props) => {
   const addSchedule = useScheduleStore((state) => state.addSchedule);
   const [formData, setFormData] = useState<FormDataProps>({
     title: '',
@@ -48,6 +49,7 @@ const AddScheduleModal = ({ close }: Props) => {
       isAllDay: formData.isAllDay,
     });
 
+    prevClose();
     close();
   };
 

@@ -7,6 +7,8 @@ import { useScheduleStore } from '@/store/ScheduleStore';
 import DeleteSvg from './svg/DeleteSvg';
 import ModifySvg from './svg/ModifySvg';
 import UpdateScheduleModal from './UpdateScheduleModal';
+import AddScheduleModal from './AddScheduleModal';
+
 import { useState } from 'react';
 
 type Props = ComponentPropsWithoutRef<typeof Modal> & {
@@ -16,10 +18,16 @@ type Props = ComponentPropsWithoutRef<typeof Modal> & {
 
 const ScheduleModal = ({ close, schedule }: Props) => {
   const deleteSchedule = useScheduleStore((state) => state.deleteSchedule);
+  const [isShowAddModal, setIsShowAddModal] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
 
-  const openModal = () => setIsShowModal(true);
-  const closeModal = () => setIsShowModal(false);
+  const openUpdateModal = () => setIsShowModal(true);
+  const closeUpdateModal = () => setIsShowModal(false);
+
+  const openAddModal = () => {
+    setIsShowAddModal(true);
+  };
+  const closeAddModal = () => setIsShowAddModal(false);
 
   const handleDelete = () => {
     if (schedule) {
@@ -37,14 +45,10 @@ const ScheduleModal = ({ close, schedule }: Props) => {
               <h3 className="text-lg flex mt-1 font-bold">{schedule.title}</h3>
               {schedule && (
                 <div className="flex gap-1">
-                  <button 
-                  title='일정 수정'
-                  onClick={openModal}>
+                  <button title="일정 수정" onClick={openUpdateModal}>
                     <ModifySvg />
                   </button>
-                  <button 
-                  title='일정 삭제'
-                  onClick={handleDelete}>
+                  <button title="일정 삭제" onClick={handleDelete}>
                     <DeleteSvg />
                   </button>
                 </div>
@@ -58,10 +62,19 @@ const ScheduleModal = ({ close, schedule }: Props) => {
             )}
           </div>
         ) : (
-          <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">일정이 없습니다.</p>
+          <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-2">
+            일정이 없습니다.
+            <button
+              onClick={openAddModal}
+              className="text-white font-bold text-sm bg-sky-500 rounded-xl hover:opacity-55"
+            >
+              일정 추가하기
+            </button>
+          </p>
         )}
       </div>
-      {isShowModal && <UpdateScheduleModal schedule={schedule} close={closeModal} prevClose={close} />}
+      {isShowAddModal && <AddScheduleModal close={closeAddModal} prevClose={close} />}
+      {isShowModal && <UpdateScheduleModal schedule={schedule} close={closeUpdateModal} prevClose={close} />}
     </Modal>
   );
 };
