@@ -2,10 +2,10 @@
 
 import { type ComponentPropsWithoutRef } from 'react';
 import { DateObj, Schedule } from '@/libs/internalTypes';
-import Modal from '../Modal';
+import Modal from '../Modal/Modal';
 import Header from './Header';
-import UpdateScheduleModal from '../UpdateScheduleModal';
-import AddScheduleModal from '../AddScheduleModal';
+import UpdateScheduleModal from '../Modal/UpdateScheduleModal';
+import AddScheduleModal from '../Modal/AddScheduleModal';
 
 import { useState } from 'react';
 import ScheduleTime from './ScheduleTime';

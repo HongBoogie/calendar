@@ -1,7 +1,7 @@
 'use client';
 
 import CalendarWrapper from './CalendarWrapper';
-import useCalendar from '../hooks/useCalendar';
+import useCalendar from '../../hooks/useCalendar';
 
 const Calendar = () => {
   const { weekCalendarList, currentDate, setCurrentDate } = useCalendar();
