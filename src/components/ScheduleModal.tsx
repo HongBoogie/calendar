@@ -6,6 +6,8 @@ import Modal from './Modal';
 import { useScheduleStore } from '@/store/ScheduleStore';
 import DeleteSvg from './svg/DeleteSvg';
 import ModifySvg from './svg/ModifySvg';
+import UpdateScheduleModal from './UpdateScheduleModal';
+import { useState } from 'react';
 
 type Props = ComponentPropsWithoutRef<typeof Modal> & {
   DateObj: DateObj;
@@ -14,7 +16,10 @@ type Props = ComponentPropsWithoutRef<typeof Modal> & {
 
 const ScheduleModal = ({ close, schedule }: Props) => {
   const deleteSchedule = useScheduleStore((state) => state.deleteSchedule);
-  const updateSchedule = useScheduleStore((state) => state.updateSchedule);
+  const [isShowModal, setIsShowModal] = useState(false);
+
+  const openModal = () => setIsShowModal(true);
+  const closeModal = () => setIsShowModal(false);
 
   const handleDelete = () => {
     if (schedule) {
@@ -32,10 +37,14 @@ const ScheduleModal = ({ close, schedule }: Props) => {
               <h3 className="text-lg flex mt-1 font-bold">{schedule.title}</h3>
               {schedule && (
                 <div className="flex gap-1">
-                  <button onClick={}>
+                  <button 
+                  title='일정 수정'
+                  onClick={openModal}>
                     <ModifySvg />
                   </button>
-                  <button onClick={handleDelete}>
+                  <button 
+                  title='일정 삭제'
+                  onClick={handleDelete}>
                     <DeleteSvg />
                   </button>
                 </div>
@@ -52,6 +61,7 @@ const ScheduleModal = ({ close, schedule }: Props) => {
           <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">일정이 없습니다.</p>
         )}
       </div>
+      {isShowModal && <UpdateScheduleModal schedule={schedule} close={closeModal} prevClose={close} />}
     </Modal>
   );
 };

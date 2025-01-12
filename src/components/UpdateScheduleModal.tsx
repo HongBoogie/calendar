@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import Modal from './Modal';
 import { useScheduleStore } from '@/store/ScheduleStore';
+import { Schedule } from '@/libs/internalTypes';
+
+import { useRouter } from 'next/navigation';
 
 type Props = {
   close: () => void;
+  schedule: Schedule | null;
+  prevClose: () => void;
 } & React.ComponentPropsWithoutRef<'div'>;
 
 export type FormDataProps = {
@@ -15,16 +20,23 @@ export type FormDataProps = {
   isAllDay: boolean;
 };
 
-const AddScheduleModal = ({ close }: Props) => {
-  const addSchedule = useScheduleStore((state) => state.addSchedule);
+const UpdateScheduleModal = ({ schedule, close, prevClose }: Props) => {
+  const updateSchedule = useScheduleStore((state) => state.updateSchedule);
+  const router = useRouter();
+
   const [formData, setFormData] = useState<FormDataProps>({
-    title: '',
-    description: '',
-    date: '',
-    startTime: '',
-    endTime: '',
-    isAllDay: false,
+    title: schedule?.title || '',
+    description: schedule?.description || '',
+    date: schedule?.date.year + '-' + schedule?.date.month + '-' + schedule?.date.day || '',
+    startTime: schedule?.startTime || '',
+    endTime: schedule?.endTime || '',
+    isAllDay: schedule?.isAllDay || false,
   });
+  const padZero = (num: number) => String(num).padStart(2, '0');
+
+  const formattedDate = schedule?.date
+    ? `${schedule.date.year}-${padZero(schedule.date.month)}-${padZero(schedule.date.day)}`
+    : '';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -35,30 +47,33 @@ const AddScheduleModal = ({ close }: Props) => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    if (schedule) {
+      e.preventDefault();
 
-    const [year, month, day] = formData.date.split('-').map(Number);
+      const [year, month, day] = formData.date.split('-').map(Number);
 
-    addSchedule({
-      title: formData.title,
-      description: formData.description,
-      date: { year, month, day },
-      startTime: formData.isAllDay ? undefined : formData.startTime,
-      endTime: formData.isAllDay ? undefined : formData.endTime,
-      isAllDay: formData.isAllDay,
-    });
+      updateSchedule(schedule?.id, {
+        title: formData.title,
+        description: formData.description,
+        date: { year, month, day },
+        startTime: formData.isAllDay ? undefined : formData.startTime,
+        endTime: formData.isAllDay ? undefined : formData.endTime,
+        isAllDay: formData.isAllDay,
+      });
 
-    close();
+      prevClose();
+      close();
+    }
   };
 
   return (
     <Modal close={close}>
-      <h2 className="text-xl font-bold mb-4 text-center">일정 추가</h2>
+      <h2 className="text-xl font-bold mb-4 text-center">일정 변경</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-            제목
+            일정명
           </label>
           <input
             type="text"
@@ -81,7 +96,7 @@ const AddScheduleModal = ({ close }: Props) => {
             type="date"
             id="date"
             name="date"
-            value={formData.date}
+            value={formattedDate}
             onChange={handleChange}
             required
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
@@ -171,4 +186,4 @@ const AddScheduleModal = ({ close }: Props) => {
   );
 };
 
-export default AddScheduleModal;
+export default UpdateScheduleModal;
