@@ -3,8 +3,6 @@ import Modal from './Modal';
 import { useScheduleStore } from '@/store/ScheduleStore';
 import { Schedule } from '@/libs/internalTypes';
 
-import { useRouter } from 'next/navigation';
-
 type Props = {
   close: () => void;
   schedule: Schedule | null;
@@ -22,7 +20,6 @@ export type FormDataProps = {
 
 const UpdateScheduleModal = ({ schedule, close, prevClose }: Props) => {
   const updateSchedule = useScheduleStore((state) => state.updateSchedule);
-  const router = useRouter();
 
   const [formData, setFormData] = useState<FormDataProps>({
     title: schedule?.title || '',
