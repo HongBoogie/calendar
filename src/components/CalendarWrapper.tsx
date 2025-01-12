@@ -67,22 +67,22 @@ const Buttons = () => {
   };
 
   return (
-    <div className="flex fixed top-11 ml-4 gap-4">
-      <strong className="text-lg w-20">
+    <div className="flex fixed mt-1 top-11 ml-4 gap-4">
+      <strong className="text-lg flex items-center w-20">
         {currentDate.getFullYear()}. {calculateMonth(currentDate.getMonth() + 1)}
       </strong>
       <div className="flex gap-1">
         <ScheduleBtn
-          className="border rounded-md w-8 flex items-center justify-center text-lg text-sky-400 border-sky-400"
+          className="border rounded-md w-8 h-8 flex relative items-center justify-center text-lg  text-sky-400 border-sky-400"
           onClick={() => setCurrentDate(subMonths(currentDate, 1))}
         >
-          {'<'}
+          <p className="pb-[2px]">{'<'}</p>
         </ScheduleBtn>
         <ScheduleBtn
-          className="border rounded-md w-8 flex items-center text-lg justify-center text-sky-400 border-sky-400"
+          className="border rounded-md w-8 h-8 flex relative items-center text-lg justify-center text-sky-400 border-sky-400"
           onClick={() => setCurrentDate(subMonths(currentDate, -1))}
         >
-          {'>'}
+          <p className="pb-[2px]">{'>'}</p>
         </ScheduleBtn>
         <ScheduleBtn
           className="border rounded-md w-8 flex items-center justify-center text-xs text-sky-400 border-sky-400"
@@ -92,12 +92,16 @@ const Buttons = () => {
         </ScheduleBtn>
         <ScheduleBtn
           onClick={openModal}
-          className="border rounded-md w-8 flex items-center justify-center text-lg text-sky-400 border-sky-400"
+          className="border rounded-md w-8 h-8 pb-[2px] flex items-center justify-center text-lg text-sky-400 border-sky-400"
         >
           +
         </ScheduleBtn>
       </div>
-      {isShowModal && <AddScheduleModal close={closeModal}>일정 추가</AddScheduleModal>}
+      {isShowModal && (
+        <AddScheduleModal close={closeModal} prevClose={closeModal}>
+          일정 추가
+        </AddScheduleModal>
+      )}
     </div>
   );
 };
@@ -127,6 +131,10 @@ const Days = () => {
   const [schedulesByDay, setSchedulesByDay] = useState<Record<string, Schedule[]>>({});
   const { weekCalendarList, currentDate } = useCalendarContext();
   const { isShowModal, dateObj, modalSchedule, openModal, closeModal } = useScheduleModal();
+
+  useEffect(() => {
+    console.log('isShowModal', isShowModal);
+  }, [isShowModal]);
 
   const schedules = useScheduleStore((state) => state.schedules);
   const getSchedulesByDate = useScheduleStore((state) => state.getSchedulesByDate);
