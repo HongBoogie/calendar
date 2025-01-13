@@ -10,7 +10,7 @@ const ScheduleDecreaser = ({ handlePrevSchedule, schedule }: Props) => {
   return (
     <button
       onClick={handlePrevSchedule}
-      className="p-2 disabled:opacity-50 absolute -left-1/2 top-1/2 rotate-90 -translate-y-1/2"
+      className="p-2 disabled:opacity-50 absolute -left-[27%] top-1/2 rotate-90 -translate-y-1/2"
       disabled={!schedule || schedule.length <= 1}
     >
       <LeftArrowSvg />
