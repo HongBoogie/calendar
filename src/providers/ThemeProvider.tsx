@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, type PropsWithChildren } from 'react';
+import { createContext, useEffect, useState, type PropsWithChildren } from 'react';
 import type { AppTheme } from '@/libs/internalTypes';
 import { APP_THEME, LOCAL_STORAGE_THEME_KEY } from '@/libs/constants';
 
