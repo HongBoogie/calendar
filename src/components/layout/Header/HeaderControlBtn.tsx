@@ -52,18 +52,6 @@ const HeaderControlButton = ({ componentType, ...rest }: Props) => {
       >
         <HeaderControlIcon componentType={componentType} />
       </button>
-      {isHover && (
-        <span
-          className={clsx(
-            'absolute left-1/2 top-[calc(100%+0.25rem)] -translate-x-1/2',
-            'flex items-center px-2 py-1',
-            'funch-medium12 text-content-neutral-primary whitespace-nowrap',
-            'bg-surface-neutral-strong rounded-md',
-          )}
-        >
-          {getButtonContent(componentType)}
-        </span>
-      )}
     </div>
   );
 };

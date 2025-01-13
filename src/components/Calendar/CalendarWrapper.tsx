@@ -82,7 +82,7 @@ const Buttons = () => {
   };
 
   return (
-    <div className="flex fixed mt-1 top-11 ml-4 gap-4">
+    <div className="flex my-4 ml-4 gap-4">
       <strong
         className={clsx('text-lg flex items-center w-20', {
           'text-slate-300': theme === 'DARK',
@@ -153,7 +153,7 @@ const WeekDays = () => {
   const { currentDate } = useCalendarContext();
 
   return (
-    <div className="grid grid-cols-7 mt-12">
+    <div className="grid grid-cols-7">
       {['일', '월', '화', '수', '목', '금', '토'].map((day, idx) => (
         <div
           key={idx}

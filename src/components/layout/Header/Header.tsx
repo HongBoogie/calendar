@@ -15,16 +15,16 @@ const Header = () => {
   return (
     <Link href="/">
       <header
-        className={clsx('h-9 flex items-center gap-1 ml-2', {
+        className={clsx('h-9 flex items-center gap-2 ml-2', {
           'text-slate-300': theme === 'DARK',
         })}
       >
-        <p className="fixed flex items-center gap-2 left-2">
+        <p className="flex items-center gap-2 ">
           <button onClick={() => setIsSidebarOpen()} aria-label={isSidebarOpen ? '사이드바 닫기' : '사이드바 열기'}>
             {theme === 'DARK' ? <WhiteHamburgerSvg /> : <HamburgerSvg />}
           </button>
         </p>
-        <div className="flex w-full p-8 items-center justify-between">
+        <div className="flex w-full items-center justify-between">
           <p className="">
             Time<strong>Blocks</strong>
           </p>
