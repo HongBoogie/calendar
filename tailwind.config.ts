@@ -13,6 +13,12 @@ const config: Config = {
       height: {
         header: HEADER_HEIGHT,
       },
+      fontSize: {
+        '2xs': '.5rem',
+      },
+      fontWeight: {
+        light: '300',
+      },
       boxShadow: {
         modal: '0 0 4px rgba(0, 0, 0, .4), 0 4px 16px rgba(0, 0, 0, .5)',
       },

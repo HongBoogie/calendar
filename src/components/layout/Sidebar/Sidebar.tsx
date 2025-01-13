@@ -14,7 +14,7 @@ const Sidebar = () => {
     <>
       {isSidebarOpen && (
         <div
-          className={clsx('fixed border-t left-0 w-40 border-r min-h-home z-20', {
+          className={clsx('md:fixed border-t flex md:flex-col', 'md:w-40 md:border-r md:min-h-home z-20', {
             'border-slate-400 text-slate-300': theme === 'DARK',
           })}
         >

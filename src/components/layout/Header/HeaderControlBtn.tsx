@@ -19,25 +19,7 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   componentType: HeaderControlButtonType;
 };
 
-const getButtonContent = (componentType: HeaderControlButtonType) => {
-  switch (componentType) {
-    case headerControlButtonType.DARK:
-      return headerControlButtonTextContent.DARK;
-    case headerControlButtonType.LIGHT:
-      return headerControlButtonTextContent.LIGHT;
-    default:
-      return '';
-  }
-};
-
 const HeaderControlButton = ({ componentType, ...rest }: Props) => {
-  const [isHover, setIsHover] = useState(false);
-  const handleMouseEnter = () => {
-    setIsHover(true);
-  };
-  const handleMouseLeave = () => {
-    setIsHover(false);
-  };
   return (
     <div className={clsx('relative h-10 w-10')}>
       <button
@@ -46,8 +28,6 @@ const HeaderControlButton = ({ componentType, ...rest }: Props) => {
           'text-content-neutral-primary',
           'hover:bg-surface-neutral-strong bg-transparent',
         )}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
         {...rest}
       >
         <HeaderControlIcon componentType={componentType} />

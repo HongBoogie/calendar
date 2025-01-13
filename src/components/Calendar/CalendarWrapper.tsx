@@ -50,7 +50,7 @@ const CalendarWrapper = ({
     <CalendarContext.Provider value={value}>
       <div
         className={clsx('flex flex-col border-t min-h-calendar', {
-          'pl-40': isSidebarOpen,
+          'md:pl-40': isSidebarOpen,
           'border-t-slate-400': theme === 'DARK',
         })}
       >
@@ -227,7 +227,7 @@ const Days = () => {
                     <span className="text-white">{dateObj.day}</span>
                   </div>
                 ) : (
-                  <span>{dateObj.day}</span>
+                  <span className="text-xs md:text-lg">{dateObj.day}</span>
                 )}
                 <ScheduleLabel schedules={schedules} />
               </div>
