@@ -1,6 +1,6 @@
 'use client';
 
-import { type ComponentPropsWithoutRef } from 'react';
+import { useEffect, type ComponentPropsWithoutRef } from 'react';
 import { DateObj, Schedule } from '@/libs/internalTypes';
 import Modal from '../Modal/Modal';
 import Header from './Header';
@@ -15,11 +15,11 @@ import ScheduleDecreaser from './ScheduleDecreaser';
 import ScheduleIncreaser from './ScheduleIncreaser';
 
 type Props = ComponentPropsWithoutRef<typeof Modal> & {
-  DateObj: DateObj;
+  DateObj?: DateObj;
   schedule: Schedule[] | null;
 };
 
-const ScheduleModal = ({ close, schedule }: Props) => {
+const ScheduleModal = ({ close, schedule, DateObj }: Props) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [detailedSchedule, setDetailedSchedule] = useState<Schedule | null>(
     schedule && schedule.length > 0 ? schedule[0] : null,
@@ -51,11 +51,14 @@ const ScheduleModal = ({ close, schedule }: Props) => {
     setDetailedSchedule(schedule[newIndex]);
   };
 
+  const padZero = (num: number) => String(num).padStart(2, '0');
+  const formattedDate = DateObj ? `${DateObj.year}-${padZero(DateObj.month)}-${padZero(DateObj.day)}` : '';
+
   return (
     <Modal close={close}>
-      <div className="min-h-32 relative flex-col">
+      <div className="min-h-32 h-32 relative flex-col">
         {detailedSchedule ? (
-          <div className="flex flex-col space-y-6">
+          <div className="flex flex-col justify-between h-full">
             <Header schedule={detailedSchedule} openModal={openUpdateModal} closeModal={close} />
             <p className="flex-1 flex truncate">{detailedSchedule.description}</p>
             {detailedSchedule.startTime && <ScheduleTime schedule={detailedSchedule} />}
@@ -67,7 +70,7 @@ const ScheduleModal = ({ close, schedule }: Props) => {
         <ScheduleIncreaser handleNextSchedule={handleNextSchedule} schedule={schedule} />
       </div>
 
-      {isShowAddModal && <AddScheduleModal close={closeAddModal} prevClose={close} />}
+      {isShowAddModal && <AddScheduleModal close={closeAddModal} date={formattedDate} prevClose={close} />}
       {isShowModal && <UpdateScheduleModal schedule={detailedSchedule} close={closeUpdateModal} prevClose={close} />}
     </Modal>
   );
