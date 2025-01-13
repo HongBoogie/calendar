@@ -9,11 +9,14 @@ import ScheduleModal from '../SchedulModal/ScheduleModal';
 import { DateObj, Schedule } from '@/libs/internalTypes';
 import AddScheduleModal from '../Modal/AddScheduleModal';
 import ScheduleBtn from '../SchedulModal/ScheduleBtn';
-import { useScheduleStore } from '@/store/ScheduleStore';
-import InitialCalendar from './InitialCalendar';
-import ScheduleLabel from './ScheduleLabel';
+import useCalendarGrid from '@/hooks/useCalendarGrid';
+import InitialCalendar from './Days/InitialCalendar';
+import useClientDate from '@/hooks/useClientDate';
+import CalendarWeek from './Days/CalendarWeek';
 import useScheduleModal from '@/hooks/useScheduleModal';
 import useThemeContext from '@/hooks/useThemeContext';
+import ButtonsWrapper from './Buttons/ButtonsWrapper';
+import FullDate from './Buttons/FullDate';
 
 type CalendarContextProps = {
   weekCalendarList: Array<Array<DateObj>>;
@@ -60,18 +63,9 @@ const CalendarWrapper = ({
   );
 };
 
-export const useCalendarContext = () => {
-  const context = React.useContext(CalendarContext);
-  if (!context) {
-    throw new Error('컨텍스트가 존재하지 않습니다.');
-  }
-  return context;
-};
-
 const Buttons = () => {
-  const { currentDate, setCurrentDate, calculateMonth } = useCalendarContext();
+  const { currentDate, calculateMonth } = useCalendarContext();
   const [isShowModal, setIsShowModal] = useState(false);
-  const { theme } = useThemeContext();
 
   const openModal = () => {
     setIsShowModal(true);
@@ -83,63 +77,13 @@ const Buttons = () => {
 
   return (
     <div className="flex my-4 ml-4 gap-4">
-      <strong
-        className={clsx('text-lg flex items-center w-20', {
-          'text-slate-300': theme === 'DARK',
-        })}
-      >
-        {currentDate.getFullYear()}. {calculateMonth(currentDate.getMonth() + 1)}
-      </strong>
-      <div className="flex gap-1">
-        <ScheduleBtn
-          className={clsx(
-            'border rounded-md w-8 h-8 flex relative items-center',
-            'justify-center text-lg  text-sky-400 border-sky-400',
-            {
-              'border-slate-300 text-slate-300': theme === 'DARK',
-            },
-          )}
-          onClick={() => setCurrentDate(subMonths(currentDate, 1))}
-        >
-          <p className="pb-[2px]">{'<'}</p>
-        </ScheduleBtn>
-        <ScheduleBtn
-          className={clsx(
-            'border rounded-md w-8 h-8 flex relative items-center text-lg',
-            'justify-center text-sky-400 border-sky-400',
-            {
-              'border-slate-300 text-slate-300': theme === 'DARK',
-            },
-          )}
-          onClick={() => setCurrentDate(subMonths(currentDate, -1))}
-        >
-          <p className="pb-[2px]">{'>'}</p>
-        </ScheduleBtn>
-        <ScheduleBtn
-          className={clsx(
-            'border rounded-md w-8 flex items-center justify-center text-xs',
-            'text-sky-400 border-sky-400',
-            {
-              'border-slate-300 text-slate-300': theme === 'DARK',
-            },
-          )}
-          onClick={() => setCurrentDate(new Date())}
-        >
-          오늘
-        </ScheduleBtn>
-        <ScheduleBtn
-          onClick={openModal}
-          className={clsx(
-            'border rounded-md w-8 h-8 pb-[2px] flex items-center',
-            'justify-center text-lg text-sky-400 border-sky-400',
-            {
-              'border-slate-300 text-slate-300': theme === 'DARK',
-            },
-          )}
-        >
-          +
-        </ScheduleBtn>
-      </div>
+      <FullDate currentDate={currentDate} calculateMonth={calculateMonth} />
+      <ButtonsWrapper isShowModal={isShowModal} currentDate={currentDate} openModal={openModal}>
+        <ButtonsWrapper.Prev />
+        <ButtonsWrapper.Next />
+        <ButtonsWrapper.Today />
+        <ButtonsWrapper.Add />
+      </ButtonsWrapper>
       {isShowModal && (
         <AddScheduleModal close={closeModal} prevClose={closeModal}>
           일정 추가
@@ -175,27 +119,11 @@ const WeekDays = () => {
 };
 
 const Days = () => {
-  const [today, setToday] = useState<Date | null>(null);
-  const [schedulesByDay, setSchedulesByDay] = useState<Record<string, Schedule[]>>({});
   const { weekCalendarList, currentDate } = useCalendarContext();
-  const { isShowModal, dateObj, modalSchedule, openModal, closeModal } = useScheduleModal();
   const { theme } = useThemeContext();
-
-  const schedules = useScheduleStore((state) => state.schedules);
-  const getSchedulesByDate = useScheduleStore((state) => state.getSchedulesByDate);
-
-  useEffect(() => {
-    setToday(new Date()); // hydration 에러 때문에 추가함.
-
-    const allSchedules: Record<string, Schedule[]> = {};
-    weekCalendarList.forEach((week) => {
-      week.forEach((date) => {
-        const key = `${date.year}-${date.month}-${date.day}`;
-        allSchedules[key] = getSchedulesByDate(date);
-      });
-    });
-    setSchedulesByDay(allSchedules);
-  }, [weekCalendarList, getSchedulesByDate, schedules]);
+  const { isShowModal, dateObj, modalSchedule, openModal, closeModal } = useScheduleModal();
+  const { schedulesByDay } = useCalendarGrid(weekCalendarList, currentDate);
+  const today = useClientDate(); // 커스텀 훅으로 hydration 처리
 
   if (!today) {
     return <InitialCalendar weekCalendarList={weekCalendarList} />;
@@ -204,41 +132,15 @@ const Days = () => {
   return (
     <div className="grid grid-cols-7 flex-grow">
       {weekCalendarList.map((week, weekIdx) => (
-        <React.Fragment key={weekIdx}>
-          {week.map((dateObj, dayIdx) => {
-            const dateKey = `${dateObj.year}-${dateObj.month}-${dateObj.day}`;
-            const schedules = schedulesByDay[dateKey] || [];
-            const isToday =
-              dateObj.day === today.getDate() &&
-              currentDate.getMonth() === today.getMonth() &&
-              currentDate.getFullYear() === today.getFullYear();
-
-            return (
-              <div
-                key={dayIdx}
-                onClick={() => openModal(dateObj)}
-                className={clsx(
-                  'text-center relative border-t pt-2 min-h-[100px]',
-                  'hover:bg-sky-50 ease-in-out duration-150',
-                  {
-                    'text-gray-300': dateObj.type !== 'current',
-                    'text-white': isToday,
-                    'border-t-slate-400': theme === 'DARK',
-                  },
-                )}
-              >
-                {isToday ? (
-                  <div className="absolute left-1/2 top-2 -translate-x-1/2 w-6 h-6 bg-sky-400 rounded-full">
-                    <span className="text-white">{dateObj.day}</span>
-                  </div>
-                ) : (
-                  <span className="text-xs md:text-lg">{dateObj.day}</span>
-                )}
-                <ScheduleLabel schedules={schedules} />
-              </div>
-            );
-          })}
-        </React.Fragment>
+        <CalendarWeek
+          key={weekIdx}
+          week={week}
+          today={today}
+          currentDate={currentDate}
+          schedulesByDay={schedulesByDay}
+          theme={theme}
+          onCellClick={openModal}
+        />
       ))}
       {isShowModal && <ScheduleModal DateObj={dateObj} schedule={modalSchedule} close={closeModal} />}
     </div>
@@ -250,3 +152,11 @@ CalendarWrapper.WeekDays = WeekDays;
 CalendarWrapper.Days = Days;
 
 export default CalendarWrapper;
+
+export const useCalendarContext = () => {
+  const context = React.useContext(CalendarContext);
+  if (!context) {
+    throw new Error('컨텍스트가 존재하지 않습니다.');
+  }
+  return context;
+};
