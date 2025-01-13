@@ -151,6 +151,11 @@ const Buttons = () => {
 
 const WeekDays = () => {
   const { currentDate } = useCalendarContext();
+  const [currentDay, setCurrentDay] = useState<number>(-1);
+
+  useEffect(() => {
+    setCurrentDay(currentDate.getDay());
+  }, [currentDate]);
 
   return (
     <div className="grid grid-cols-7">
@@ -158,8 +163,8 @@ const WeekDays = () => {
         <div
           key={idx}
           className={clsx('text-center font-bold', {
-            ['text-red-500']: day === '일',
-            ['opacity-35']: idx !== currentDate.getDay() || currentDate.getMonth() !== new Date().getMonth(),
+            'text-red-500': day === '일',
+            'opacity-35': idx !== currentDay || currentDate.getMonth() !== new Date().getMonth(),
           })}
         >
           {day}

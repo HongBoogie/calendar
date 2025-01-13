@@ -1,18 +1,13 @@
 import MoonSvg from '../../svg/MoonSvg';
 import SunSvg from '../../svg/SunSvg';
 import clsx from 'clsx';
-import { ButtonHTMLAttributes, useState } from 'react';
+import { ButtonHTMLAttributes } from 'react';
 
 type HeaderControlButtonType = keyof typeof headerControlButtonType;
 
 const headerControlButtonType = {
   DARK: 'DARK' as const,
   LIGHT: 'LIGHT' as const,
-};
-
-const headerControlButtonTextContent = {
-  DARK: '밝은 테마' as const,
-  LIGHT: '어두운 테마' as const,
 };
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
