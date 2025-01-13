@@ -5,10 +5,10 @@ import clsx from 'clsx';
 import { type PropsWithChildren } from 'react';
 import { subMonths } from 'date-fns';
 import { useState } from 'react';
-import ScheduleModal from './ScheduleModal';
+import ScheduleModal from '../SchedulModal/ScheduleModal';
 import { DateObj, Schedule } from '@/libs/internalTypes';
-import AddScheduleModal from './AddScheduleModal';
-import ScheduleBtn from './ScheduleBtn';
+import AddScheduleModal from '../Modal/AddScheduleModal';
+import ScheduleBtn from '../SchedulModal/ScheduleBtn';
 import { useScheduleStore } from '@/store/ScheduleStore';
 import InitialCalendar from './InitialCalendar';
 import ScheduleLabel from './ScheduleLabel';
@@ -131,10 +131,6 @@ const Days = () => {
   const [schedulesByDay, setSchedulesByDay] = useState<Record<string, Schedule[]>>({});
   const { weekCalendarList, currentDate } = useCalendarContext();
   const { isShowModal, dateObj, modalSchedule, openModal, closeModal } = useScheduleModal();
-
-  useEffect(() => {
-    console.log('isShowModal', isShowModal);
-  }, [isShowModal]);
 
   const schedules = useScheduleStore((state) => state.schedules);
   const getSchedulesByDate = useScheduleStore((state) => state.getSchedulesByDate);

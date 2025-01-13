@@ -8,11 +8,11 @@ type Props = {
 const ScheduleLabel = ({ schedules }: Props) => {
   return (
     <div className="absolute w-full top-10 px-1">
-      {schedules.map((schedule) => (
+      {schedules.slice(0, 1).map((schedule) => (
         <div
           key={schedule.id}
           className={clsx(
-            'text-xs p-1 mb-1 rounded truncate text-left',
+            'text-xs py-1 px-2 mb-1 rounded-xl  truncate text-left',
             'bg-sky-100 text-sky-700',
             schedule.isAllDay && 'bg-purple-100 text-purple-700',
           )}
@@ -28,6 +28,7 @@ const ScheduleLabel = ({ schedules }: Props) => {
           )}
         </div>
       ))}
+      {schedules.length > 1 && <div className="text-xs text-gray-400  text-left pl-4">+{schedules.length - 1}개</div>}
     </div>
   );
 };

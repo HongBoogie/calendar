@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import { PropsWithChildren } from 'react';
-import Header from '@/components/Header';
-import Sidebar from '@/components/Sidebar';
+import Header from '@/components/Header/Header';
+import Sidebar from '@/components/Sidebar/Sidebar';
 import GlobalPortal from '@/GlobalPortal';
 
 const geistSans = localFont({

@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { DateObj } from '@/libs/internalTypes';
 import { Schedule } from '@/libs/internalTypes';
 
-interface ScheduleState {
+type ScheduleState = {
   schedules: Schedule[];
   addSchedule: (schedule: Omit<Schedule, 'id'>) => void;
   updateSchedule: (id: string, schedule: Partial<Schedule>) => void;
