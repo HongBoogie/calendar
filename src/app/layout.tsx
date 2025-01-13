@@ -2,9 +2,11 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import { PropsWithChildren } from 'react';
-import Header from '@/components/Header/Header';
-import Sidebar from '@/components/Sidebar/Sidebar';
+import Header from '@/components/layout/Header/Header';
+import Sidebar from '@/components/layout/Sidebar/Sidebar';
 import GlobalPortal from '@/GlobalPortal';
+import GlobalProvider from '@/providers/GlobalProvider';
+import ThemeLayout from '@/components/layout/ThemeLayout';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -31,9 +33,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <GlobalPortal>
-          <Header />
-          <Sidebar />
-          <Layout>{children}</Layout>
+          <GlobalProvider>
+            <ThemeLayout>
+              <Header />
+              <Sidebar />
+              <Layout>{children}</Layout>
+            </ThemeLayout>
+          </GlobalProvider>
         </GlobalPortal>
       </body>
     </html>
@@ -41,5 +47,5 @@ export default function RootLayout({
 }
 
 const Layout = ({ children }: PropsWithChildren) => {
-  return <div className="min-h-home overflow-x-auto min-w-layout pl-40">{children}</div>;
+  return <div className="min-h-home overflow-x-auto">{children}</div>;
 };

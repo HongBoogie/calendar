@@ -9,7 +9,7 @@ type ScheduleState = {
   updateSchedule: (id: string, schedule: Partial<Schedule>) => void;
   deleteSchedule: (id: string) => void;
   getSchedulesByDate: (date: DateObj) => Schedule[];
-}
+};
 
 export const useScheduleStore = create<ScheduleState>()(
   persist(

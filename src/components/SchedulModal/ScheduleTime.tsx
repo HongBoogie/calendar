@@ -1,5 +1,4 @@
 import { Schedule } from '@/libs/internalTypes';
-import { getDay } from 'date-fns';
 
 type Props = {
   schedule: Schedule;

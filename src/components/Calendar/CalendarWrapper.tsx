@@ -13,12 +13,15 @@ import { useScheduleStore } from '@/store/ScheduleStore';
 import InitialCalendar from './InitialCalendar';
 import ScheduleLabel from './ScheduleLabel';
 import useScheduleModal from '@/hooks/useScheduleModal';
+import useThemeContext from '@/hooks/useThemeContext';
 
 type CalendarContextProps = {
   weekCalendarList: Array<Array<DateObj>>;
   currentDate: Date;
   setCurrentDate: React.Dispatch<React.SetStateAction<Date>>;
   calculateMonth: (month: number) => string;
+  theme: string;
+  isSidebarOpen: boolean;
 };
 
 type CalendarProps = CalendarContextProps & PropsWithChildren;
@@ -30,6 +33,8 @@ const CalendarWrapper = ({
   currentDate,
   setCurrentDate,
   calculateMonth,
+  isSidebarOpen,
+  theme,
   children,
 }: CalendarProps) => {
   const value = {
@@ -37,11 +42,20 @@ const CalendarWrapper = ({
     currentDate,
     setCurrentDate,
     calculateMonth,
+    isSidebarOpen,
+    theme,
   };
 
   return (
     <CalendarContext.Provider value={value}>
-      <div className="flex flex-col border-t min-h-calendar">{children}</div>
+      <div
+        className={clsx('flex flex-col border-t min-h-calendar', {
+          'pl-40': isSidebarOpen,
+          'border-t-slate-400': theme === 'DARK',
+        })}
+      >
+        {children}
+      </div>
     </CalendarContext.Provider>
   );
 };
@@ -57,6 +71,7 @@ export const useCalendarContext = () => {
 const Buttons = () => {
   const { currentDate, setCurrentDate, calculateMonth } = useCalendarContext();
   const [isShowModal, setIsShowModal] = useState(false);
+  const { theme } = useThemeContext();
 
   const openModal = () => {
     setIsShowModal(true);
@@ -68,31 +83,59 @@ const Buttons = () => {
 
   return (
     <div className="flex fixed mt-1 top-11 ml-4 gap-4">
-      <strong className="text-lg flex items-center w-20">
+      <strong
+        className={clsx('text-lg flex items-center w-20', {
+          'text-slate-300': theme === 'DARK',
+        })}
+      >
         {currentDate.getFullYear()}. {calculateMonth(currentDate.getMonth() + 1)}
       </strong>
       <div className="flex gap-1">
         <ScheduleBtn
-          className="border rounded-md w-8 h-8 flex relative items-center justify-center text-lg  text-sky-400 border-sky-400"
+          className={clsx(
+            'border rounded-md w-8 h-8 flex relative items-center',
+            'justify-center text-lg  text-sky-400 border-sky-400',
+            {
+              'border-slate-300 text-slate-300': theme === 'DARK',
+            },
+          )}
           onClick={() => setCurrentDate(subMonths(currentDate, 1))}
         >
           <p className="pb-[2px]">{'<'}</p>
         </ScheduleBtn>
         <ScheduleBtn
-          className="border rounded-md w-8 h-8 flex relative items-center text-lg justify-center text-sky-400 border-sky-400"
+          className={clsx(
+            'border rounded-md w-8 h-8 flex relative items-center text-lg',
+            'justify-center text-sky-400 border-sky-400',
+            {
+              'border-slate-300 text-slate-300': theme === 'DARK',
+            },
+          )}
           onClick={() => setCurrentDate(subMonths(currentDate, -1))}
         >
           <p className="pb-[2px]">{'>'}</p>
         </ScheduleBtn>
         <ScheduleBtn
-          className="border rounded-md w-8 flex items-center justify-center text-xs text-sky-400 border-sky-400"
+          className={clsx(
+            'border rounded-md w-8 flex items-center justify-center text-xs',
+            'text-sky-400 border-sky-400',
+            {
+              'border-slate-300 text-slate-300': theme === 'DARK',
+            },
+          )}
           onClick={() => setCurrentDate(new Date())}
         >
           오늘
         </ScheduleBtn>
         <ScheduleBtn
           onClick={openModal}
-          className="border rounded-md w-8 h-8 pb-[2px] flex items-center justify-center text-lg text-sky-400 border-sky-400"
+          className={clsx(
+            'border rounded-md w-8 h-8 pb-[2px] flex items-center',
+            'justify-center text-lg text-sky-400 border-sky-400',
+            {
+              'border-slate-300 text-slate-300': theme === 'DARK',
+            },
+          )}
         >
           +
         </ScheduleBtn>
@@ -131,6 +174,7 @@ const Days = () => {
   const [schedulesByDay, setSchedulesByDay] = useState<Record<string, Schedule[]>>({});
   const { weekCalendarList, currentDate } = useCalendarContext();
   const { isShowModal, dateObj, modalSchedule, openModal, closeModal } = useScheduleModal();
+  const { theme } = useThemeContext();
 
   const schedules = useScheduleStore((state) => state.schedules);
   const getSchedulesByDate = useScheduleStore((state) => state.getSchedulesByDate);
@@ -174,11 +218,12 @@ const Days = () => {
                   {
                     'text-gray-300': dateObj.type !== 'current',
                     'text-white': isToday,
+                    'border-t-slate-400': theme === 'DARK',
                   },
                 )}
               >
                 {isToday ? (
-                  <div className="absolute left-1/2 top-2 opacity-50 -translate-x-1/2 w-6 h-6 bg-sky-500 rounded-full">
+                  <div className="absolute left-1/2 top-2 -translate-x-1/2 w-6 h-6 bg-sky-400 rounded-full">
                     <span className="text-white">{dateObj.day}</span>
                   </div>
                 ) : (

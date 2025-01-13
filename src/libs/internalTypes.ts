@@ -1,3 +1,5 @@
+import { APP_THEME } from './constants';
+
 export type SvgComponentProps = {
   svgTitle?: string;
   svgDescription?: string;
@@ -19,3 +21,5 @@ export type Schedule = {
   endTime?: string;
   isAllDay: boolean;
 };
+
+export type AppTheme = keyof typeof APP_THEME;

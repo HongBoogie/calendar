@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Modal from './Modal';
 import { useScheduleStore } from '@/store/ScheduleStore';
-import { DateObj } from '@/libs/internalTypes';
 
 type Props = {
   close: () => void;
