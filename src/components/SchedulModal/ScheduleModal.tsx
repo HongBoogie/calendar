@@ -61,7 +61,7 @@ const ScheduleModal = ({ close, schedule, DateObj }: Props) => {
           <div className="flex flex-col justify-between h-full">
             <Header schedule={detailedSchedule} openModal={openUpdateModal} closeModal={close} />
             <p className="flex-1 flex truncate">{detailedSchedule.description}</p>
-            {detailedSchedule.startTime && <ScheduleTime schedule={detailedSchedule} />}
+            <ScheduleTime schedule={detailedSchedule} />
           </div>
         ) : (
           <NoSchedule openAddModal={openAddModal} />
