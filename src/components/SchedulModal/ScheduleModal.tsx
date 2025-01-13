@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, type ComponentPropsWithoutRef } from 'react';
+import { type ComponentPropsWithoutRef } from 'react';
 import { DateObj, Schedule } from '@/libs/internalTypes';
 import Modal from '../Modal/Modal';
 import Header from './Header';
