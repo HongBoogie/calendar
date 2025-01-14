@@ -3,12 +3,10 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { type PropsWithChildren } from 'react';
-import { subMonths } from 'date-fns';
 import { useState } from 'react';
 import ScheduleModal from '../SchedulModal/ScheduleModal';
-import { DateObj, Schedule } from '@/libs/internalTypes';
+import { DateObj } from '@/libs/internalTypes';
 import AddScheduleModal from '../Modal/AddScheduleModal';
-import ScheduleBtn from '../SchedulModal/ScheduleBtn';
 import useCalendarGrid from '@/hooks/useCalendarGrid';
 import InitialCalendar from './Days/InitialCalendar';
 import useClientDate from '@/hooks/useClientDate';
@@ -122,7 +120,7 @@ const Days = () => {
   const { weekCalendarList, currentDate } = useCalendarContext();
   const { theme } = useThemeContext();
   const { isShowModal, dateObj, modalSchedule, openModal, closeModal } = useScheduleModal();
-  const { schedulesByDay } = useCalendarGrid(weekCalendarList, currentDate);
+  const { schedulesByDay } = useCalendarGrid(weekCalendarList);
   const today = useClientDate(); // 커스텀 훅으로 hydration 처리
 
   if (!today) {

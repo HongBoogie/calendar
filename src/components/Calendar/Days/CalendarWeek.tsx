@@ -6,13 +6,13 @@ import CalendarCell from './CalendarCell';
 type Props = {
   week: DateObj[];
   today: Date;
-  currentDate: Date;
+  currentDate?: Date;
   schedulesByDay: Record<string, Schedule[]>;
   theme: 'LIGHT' | 'DARK';
   onCellClick: (dateObj: DateObj) => void;
 };
 
-const CalendarWeek = ({ week, today, currentDate, schedulesByDay, theme, onCellClick }: Props) => {
+const CalendarWeek = ({ week, today, schedulesByDay, theme, onCellClick }: Props) => {
   return (
     <>
       {week.map((dateObj, dayIdx) => {

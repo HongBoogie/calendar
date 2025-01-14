@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Modal from './Modal';
 import { useScheduleStore } from '@/store/ScheduleStore';
 import ScheduleModal from './ScheduleModal';
 
