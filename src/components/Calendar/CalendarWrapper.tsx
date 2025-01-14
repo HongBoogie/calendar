@@ -120,7 +120,7 @@ const Days = () => {
   const { weekCalendarList, currentDate } = useCalendarContext();
   const { theme } = useThemeContext();
   const { isShowModal, dateObj, modalSchedule, openModal, closeModal } = useScheduleModal();
-  const { schedulesByDay } = useCalendarGrid(weekCalendarList);
+  const { schedulesByDay } = useCalendarGrid();
   const today = useClientDate(); // 커스텀 훅으로 hydration 처리
 
   if (!today) {
