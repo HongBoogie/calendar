@@ -55,7 +55,12 @@ const ScheduleModal = ({ close, schedule, DateObj }: Props) => {
 
       {isShowAddModal && <AddScheduleModal close={closeAddModal} date={formattedDate} prevClose={close} />}
       {isShowUpdateModal && (
-        <UpdateScheduleModal schedule={detailedSchedule} close={closeUpdateModal} prevClose={close} />
+        <UpdateScheduleModal
+          schedule={detailedSchedule}
+          date={formattedDate}
+          close={closeUpdateModal}
+          prevClose={close}
+        />
       )}
     </Modal>
   );

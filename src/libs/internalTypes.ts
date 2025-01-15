@@ -22,4 +22,13 @@ export type Schedule = {
   isAllDay: boolean;
 };
 
+export type FormDataProps = {
+  title: string;
+  description: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  isAllDay: boolean;
+};
+
 export type AppTheme = keyof typeof APP_THEME;

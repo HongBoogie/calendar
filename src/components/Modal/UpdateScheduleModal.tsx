@@ -2,38 +2,26 @@ import { useState } from 'react';
 import { useScheduleStore } from '@/store/ScheduleStore';
 import { Schedule } from '@/libs/internalTypes';
 import ScheduleModal from './ScheduleModal';
+import type { FormDataProps } from '@/libs/internalTypes';
 
 type Props = {
   close: () => void;
   schedule: Schedule | null;
   prevClose: () => void;
+  date?: string;
 } & React.ComponentPropsWithoutRef<'div'>;
 
-export type FormDataProps = {
-  title: string;
-  description: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  isAllDay: boolean;
-};
-
-const UpdateScheduleModal = ({ schedule, close, prevClose }: Props) => {
+const UpdateScheduleModal = ({ schedule, close, prevClose, date }: Props) => {
   const updateSchedule = useScheduleStore((state) => state.updateSchedule);
 
   const [formData, setFormData] = useState<FormDataProps>({
     title: schedule?.title || '',
     description: schedule?.description || '',
-    date: schedule?.date.year + '-' + schedule?.date.month + '-' + schedule?.date.day || '',
+    date: date || '',
     startTime: schedule?.startTime || '',
     endTime: schedule?.endTime || '',
     isAllDay: schedule?.isAllDay || false,
   });
-  const padZero = (num: number) => String(num).padStart(2, '0');
-
-  const formattedDate = schedule?.date
-    ? `${schedule.date.year}-${padZero(schedule.date.month)}-${padZero(schedule.date.day)}`
-    : '';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -69,7 +57,6 @@ const UpdateScheduleModal = ({ schedule, close, prevClose }: Props) => {
       handleSubmit={handleSubmit}
       handleChange={handleChange}
       formData={formData}
-      formattedDate={formattedDate}
       type="일정 수정"
     />
   );

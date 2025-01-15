@@ -1,21 +1,13 @@
 import { useState } from 'react';
 import { useScheduleStore } from '@/store/ScheduleStore';
 import ScheduleModal from './ScheduleModal';
+import type { FormDataProps } from '@/libs/internalTypes';
 
 type Props = {
   close: () => void;
   prevClose: () => void;
   date?: string;
 } & React.ComponentPropsWithoutRef<'div'>;
-
-export type FormDataProps = {
-  title: string;
-  description: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  isAllDay: boolean;
-};
 
 const AddScheduleModal = ({ close, prevClose, date }: Props) => {
   const addSchedule = useScheduleStore((state) => state.addSchedule);
