@@ -18,21 +18,16 @@ type Props = {
     endTime: string;
     isAllDay: boolean;
   };
-  formattedDate?: string;
   type: string;
 };
 
-const ScheduleModal = ({ close, handleSubmit, handleChange, formData, formattedDate, type }: Props) => {
+const ScheduleModal = ({ close, handleSubmit, handleChange, formData, type }: Props) => {
   return (
     <Modal close={close}>
       <ModalType type={type} />
       <form onSubmit={handleSubmit} className="space-y-4">
         <ModalTitle title={formData.title} handleChange={handleChange} />
-        {formattedDate ? (
-          <ModalDate date={formattedDate} handleChange={handleChange} />
-        ) : (
-          <ModalDate date={formData.date} handleChange={handleChange} />
-        )}
+        <ModalDate date={formData.date} handleChange={handleChange} />
         <ModalTime
           isAllDay={formData.isAllDay}
           handleChange={handleChange}

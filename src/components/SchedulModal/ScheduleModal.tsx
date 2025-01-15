@@ -13,6 +13,7 @@ import NoSchedule from './NoSchedule';
 
 import ScheduleDecreaser from './ScheduleDecreaser';
 import ScheduleIncreaser from './ScheduleIncreaser';
+import useChangeSchedule from '@/hooks/useChangeSchedule';
 
 type Props = ComponentPropsWithoutRef<typeof Modal> & {
   DateObj?: DateObj;
@@ -20,36 +21,18 @@ type Props = ComponentPropsWithoutRef<typeof Modal> & {
 };
 
 const ScheduleModal = ({ close, schedule, DateObj }: Props) => {
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [detailedSchedule, setDetailedSchedule] = useState<Schedule | null>(
-    schedule && schedule.length > 0 ? schedule[0] : null,
-  );
-  const [isShowAddModal, setIsShowAddModal] = useState(false);
-  const [isShowModal, setIsShowModal] = useState(false);
+  const { detailedSchedule, handleNextSchedule, handlePrevSchedule } = useChangeSchedule({ schedule });
 
-  const openUpdateModal = () => setIsShowModal(true);
-  const closeUpdateModal = () => setIsShowModal(false);
+  const [isShowAddModal, setIsShowAddModal] = useState(false);
+  const [isShowUpdateModal, setIsShowUpdateModal] = useState(false);
+
+  const openUpdateModal = () => setIsShowUpdateModal(true);
+  const closeUpdateModal = () => setIsShowUpdateModal(false);
 
   const openAddModal = () => {
     setIsShowAddModal(true);
   };
   const closeAddModal = () => setIsShowAddModal(false);
-
-  const handlePrevSchedule = () => {
-    if (!schedule || schedule.length === 0) return;
-
-    const newIndex = currentIndex > 0 ? currentIndex - 1 : schedule.length - 1;
-    setCurrentIndex(newIndex);
-    setDetailedSchedule(schedule[newIndex]);
-  };
-
-  const handleNextSchedule = () => {
-    if (!schedule || schedule.length === 0) return;
-
-    const newIndex = currentIndex < schedule.length - 1 ? currentIndex + 1 : 0;
-    setCurrentIndex(newIndex);
-    setDetailedSchedule(schedule[newIndex]);
-  };
 
   const padZero = (num: number) => String(num).padStart(2, '0');
   const formattedDate = DateObj ? `${DateObj.year}-${padZero(DateObj.month)}-${padZero(DateObj.day)}` : '';
@@ -71,7 +54,14 @@ const ScheduleModal = ({ close, schedule, DateObj }: Props) => {
       </div>
 
       {isShowAddModal && <AddScheduleModal close={closeAddModal} date={formattedDate} prevClose={close} />}
-      {isShowModal && <UpdateScheduleModal schedule={detailedSchedule} close={closeUpdateModal} prevClose={close} />}
+      {isShowUpdateModal && (
+        <UpdateScheduleModal
+          schedule={detailedSchedule}
+          date={formattedDate}
+          close={closeUpdateModal}
+          prevClose={close}
+        />
+      )}
     </Modal>
   );
 };
