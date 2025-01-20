@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { getDaysInMonth, subMonths } from 'date-fns';
-import { CALENDER_LENGTH, DAY_OF_WEEK } from '../configs/tailwind.constant';
+import { CALENDAR_LENGTH, DAY_OF_WEEK } from '../configs/tailwind.constant';
 
 const useCalendar = () => {
   const [currentDate, setCurrentDate] = React.useState(new Date());
@@ -29,7 +29,7 @@ const useCalendar = () => {
   }));
 
   const nextDayList = Array.from({
-    length: CALENDER_LENGTH - currentDayList.length - prevDayList.length,
+    length: CALENDAR_LENGTH - currentDayList.length - prevDayList.length,
   }).map((_, index) => ({
     year: currentDate.getFullYear(),
     day: index + 1,
