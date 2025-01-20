@@ -69,7 +69,7 @@ const TodayButton = () => {
 
   return (
     <ScheduleBtn
-      className={clsx('border rounded-md w-8 flex items-center justify-center text-xs', 'text-sky-400 border-sky-400', {
+      className={clsx('border rounded-md w-8 flex items-center', 'justify-center text-xs text-sky-400 border-sky-400', {
         'border-slate-300 text-slate-300': theme === 'DARK',
       })}
       onClick={() => setCurrentDate(new Date())}
