@@ -121,7 +121,7 @@ const Days = () => {
   const { theme } = useThemeContext();
   const { isShowModal, dateObj, modalSchedule, openModal, closeModal } = useScheduleModal();
   const { schedulesByDay } = useCalendarGrid();
-  const today = useClientDate(); // 커스텀 훅으로 hydration 처리
+  const today = useClientDate({ refreshInterval: 3000 }); // 커스텀 훅으로 hydration 처리
 
   if (!today) {
     return <InitialCalendar weekCalendarList={weekCalendarList} />;
