@@ -19,9 +19,8 @@ const HeaderControlButton = ({ componentType, ...rest }: Props) => {
     <div className={clsx('relative h-10 w-10')}>
       <button
         className={clsx(
-          'inline-flex h-full w-full items-center justify-center overflow-hidden rounded-md',
-          'text-content-neutral-primary',
-          'hover:bg-surface-neutral-strong bg-transparent',
+          'inline-flex h-full w-full items-center justify-center',
+          'overflow-hidden rounded-md bg-transparent',
         )}
         {...rest}
       >

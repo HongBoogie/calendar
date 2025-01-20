@@ -1,11 +1,21 @@
 import { useState, useEffect } from 'react';
 
-const useClientDate = () => {
-  const [today, setToday] = useState<Date | null>(null);
+type Props = {
+  refreshInterval?: number;
+};
+
+const useClientDate = ({ refreshInterval }: Props) => {
+  const [today, setToday] = useState(() => new Date());
 
   useEffect(() => {
-    setToday(new Date());
-  }, []);
+    if (!refreshInterval) return;
+
+    const interval = setInterval(() => {
+      setToday(new Date());
+    }, refreshInterval);
+
+    return () => clearInterval(interval);
+  }, [refreshInterval]);
 
   return today;
 };
